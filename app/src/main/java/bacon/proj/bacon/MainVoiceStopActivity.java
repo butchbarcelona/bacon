@@ -2,11 +2,14 @@ package bacon.proj.bacon;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Locale;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
@@ -16,9 +19,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import bacon.proj.bacon.services.RestServices;
 
-    public final String TAG = "Bacon";
+public class MainVoiceStopActivity extends AppCompatActivity {
+
+    public final static String TAG = "Bacon";
 
     private TextView txtSpeechInput;
     private ImageButton btnSpeak;
@@ -35,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         // hide the action bar
         getSupportActionBar().hide();
 
+        promptSpeechInput();
         btnSpeak.setOnClickListener(new View.OnClickListener() {
 
 
@@ -78,11 +84,65 @@ public class MainActivity extends AppCompatActivity {
 
                     ArrayList<String> result = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    txtSpeechInput.setText(result.get(0));
+
+                    HashMap<String,String> params = new HashMap<String, String>();
+
+                    String command = result.get(0);
+                    switch(result.get(0).toLowerCase()){
+                        case "1":
+                            command = "one";
+                            break;
+                        case "2":
+                            command = "two";
+                            break;
+                        case "3":
+                            command = "three";
+                            break;
+                        case "4":
+                            command = "four";
+                            break;
+                        case "off":
+                            command = "off";
+                            break;
+                        case "lights off":
+                            command = "lights off";
+                            break;
+                        case "lights on":
+                            command = "lights on";
+                            break;
+                    }
+
+                    params.put("args", command);
+                    txtSpeechInput.setText(command);
+
+                    //String response = RestServices.getInstance().callRest(MainVoiceStopActivity.this, params);
+                    new RestAsyncTask(params, MainVoiceStopActivity.this, new RestAsyncTask.RestAsyncTaskListener() {
+                        @Override
+                        public void postExec(String response) {
+                            showSnackBarToast(MainVoiceStopActivity.this, "Server response: "+response);
+                        }
+                    });
+
+
+
+
+
+                    //promptSpeechInput();
                 }
                 break;
             }
 
+        }
+    }
+
+    public void showSnackBarToast(Context context, String message){
+       /* int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+        if (currentapiVersion >= android.os.Build.VERSION_CODES.LOLLIPOP){
+            // Do something for lollipop and above versions
+            Snackbar.make(((Activity)context).getWindow().getDecorView().findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG).show();
+        } else*/{
+            // do something for phones running an SDK before lollipop
+            Toast.makeText(context,message,Toast.LENGTH_LONG).show();
         }
     }
 

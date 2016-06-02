@@ -17,7 +17,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import bacon.proj.bacon.MainActivity;
+import bacon.proj.bacon.MainVoiceStopActivity;
 
 /**
  * Created by tonnyquintos on 11/30/15.
@@ -27,7 +27,7 @@ public class RestServices {
 
     private static RestServices instance;
 
-    private static String TAG = "test";
+    public static String TAG = "test";
 
     private RestServices(){
 
@@ -44,7 +44,7 @@ public class RestServices {
 
     public String callRest(Context ctx, HashMap<String, String> postDataParams) {
 
-        sharedpreferences = ctx.getSharedPreferences(MainActivity.TAG, Context.MODE_PRIVATE);
+        sharedpreferences = ctx.getSharedPreferences(MainVoiceStopActivity.TAG, Context.MODE_PRIVATE);
 
         String deviceId = sharedpreferences.getString("device_id", "310021001447343338333633");
         String accessToken = sharedpreferences.getString("access_token", "ed85ceeff03057276a0d00fcd3d32a8fe367a648");
@@ -110,3 +110,4 @@ public class RestServices {
         return result.toString();
     }
 }
+
