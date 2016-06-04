@@ -46,8 +46,8 @@ public class RestServices {
 
         sharedpreferences = ctx.getSharedPreferences(MainVoiceStopActivity.TAG, Context.MODE_PRIVATE);
 
-        String deviceId = sharedpreferences.getString("device_id", "310021001447343338333633");
-        String accessToken = sharedpreferences.getString("access_token", "ed85ceeff03057276a0d00fcd3d32a8fe367a648");
+        String deviceId = sharedpreferences.getString("device_id", "2b003a000e47343432313031");
+        String accessToken = sharedpreferences.getString("access_token", "d7d86a6fd5398c00e3e1adf8f4f76aa12c7a7bed");
 
 
         HttpURLConnection conn = null;

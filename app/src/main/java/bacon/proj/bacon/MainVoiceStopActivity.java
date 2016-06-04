@@ -121,7 +121,7 @@ public class MainVoiceStopActivity extends AppCompatActivity {
                         public void postExec(String response) {
                             showSnackBarToast(MainVoiceStopActivity.this, "Server response: "+response);
                         }
-                    });
+                    }).execute();
 
 
 
